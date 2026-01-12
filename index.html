@@ -3,21 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <title>Jurnal Guru Digital</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f4f7;
+}
+.container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+input, textarea, select, button {
+  width: 100%;
+  margin: 6px 0;
+  padding: 8px;
+}
+button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+</style>
 </head>
 
 <body>
+<div class="container">
+<h2>📘 Jurnal Guru Digital</h2>
 
-<h2>Jurnal Guru Digital</h2>
+<form id="jurnalForm">
+  <input type="date" name="tanggal" required>
 
-<form>
-  <label>Tanggal</label><br>
-  <input type="date"><br><br>
+  <select name="hari">
+    <option>Senin</option>
+    <option>Selasa</option>
+    <option>Rabu</option>
+    <option>Kamis</option>
+    <option>Jumat</option>
+  </select>
 
-  <label>Kelas</label><br>
-  <input type="text" placeholder="Contoh: X DKV 1"><br><br>
+  <input type="text" name="kelas" placeholder="Kelas" required>
+  <input type="text" name="jam" placeholder="Jam ke-" required>
 
-  <button>Simpan</button>
+  <textarea name="materi" placeholder="KD / Materi / Kegiatan"></textarea>
+
+  <input type="number" name="hadir" placeholder="Jumlah Hadir">
+  <input type="number" name="izin" placeholder="Jumlah Izin">
+  <input type="number" name="sakit" placeholder="Jumlah Sakit">
+
+  <textarea name="tidak_masuk" placeholder="Nama siswa tidak masuk"></textarea>
+
+  <input type="url" name="link_pdf" placeholder="Link Materi PDF (Google Drive)">
+
+  <textarea name="keterangan" placeholder="Keterangan"></textarea>
+
+  <button type="submit">💾 Simpan Jurnal</button>
 </form>
+
+<p id="status"></p>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbyl2ziBZWev7Q9CeZ3MimTH_01DRGMDoc2ixgD9OakHhKCwwojg3PorkdGdaPCkSwNZAQ/exec";
+
+document.getElementById("jurnalForm").addEventListener("submit", e => {
+  e.preventDefault();
+  fetch(scriptURL, {
+    method: "POST",
+    body: new FormData(e.target)
+  })
+  .then(() => {
+    document.getElementById("status").innerHTML = "✅ Jurnal berhasil disimpan";
+    e.target.reset();
+  })
+  .catch(() => {
+    document.getElementById("status").innerHTML = "❌ Gagal menyimpan";
+  });
+});
+</script>
 
 </body>
 </html>
